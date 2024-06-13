@@ -73,22 +73,18 @@ def draw_heat_map():
 
     # 12
     corr = df_heat.corr()
-    corr = corr.apply(lambda x: x.round(1))  
+    corr = corr.round(decimals=1)
 
     # 13
     length = corr.index.size
     mask = np.fromfunction(lambda i, j: i <= j, (length,length), dtype=int)
 
     # 14
-
     fig, ax = plt.subplots(figsize=(8,7))
-
-    #ax = sns.heatmap(corr, annot=True, linewidth=0.5, mask=mask)
-    #fig = ax.figure
 
     # 15
 
-    sns.heatmap(corr, annot=True, linewidth=0.5, mask=mask, ax=ax, square=True)
+    sns.heatmap(corr, annot=True, linewidth=0.5, mask=mask, ax=ax, square=True, fmt=".1f")
     #fig.subplots_adjust(top=0.95, bottom=0.13)
 
 
