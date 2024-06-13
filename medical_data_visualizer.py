@@ -60,18 +60,39 @@ def draw_cat_plot():
 # 10
 def draw_heat_map():
     # 11
-    df_heat = None
+    height_filter = (df['height'] >= df['height'].quantile(0.025))
+    height_filter &= (df['height'] <= df['height'].quantile(0.975))
+
+    weight_filter = (df['weight'] >= df['weight'].quantile(0.025))
+    weight_filter &= (df['weight'] <= df['weight'].quantile(0.975))
+
+    bp_filter = (df['ap_lo'] <= df['ap_hi'])
+
+    data_filter = height_filter & weight_filter & bp_filter
+
+    df_heat = df.loc[data_filter]
+
 
     # 12
-    corr = None
+    corr = df_heat.corr()
+    print(corr.info())
+    print(corr)
+    #print(corr.loc['id','id'])
+    #print(corr.iloc[0,:])
 
     # 13
-    mask = None
+    length = corr.index.size
+    mask = np.fromfunction(lambda i, j: i > j, (length,length), dtype=int)
+    corr = corr.where(mask)
+    print(corr)
 
-
+    corr = corr.apply(lambda x: x.round(1))
 
     # 14
-    fig, ax = None
+    #fig, ax = None
+    
+    ax = sns.heatmap(corr, annot=True)
+    fig = ax.figure
 
     # 15
 
@@ -80,3 +101,4 @@ def draw_heat_map():
     # 16
     fig.savefig('heatmap.png')
     return fig
+    
