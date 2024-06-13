@@ -46,7 +46,7 @@ def draw_cat_plot():
 
     # Graph in seaborn
     cat_plot = sns.catplot(data=df_cat, x="variable", y="count", hue="value", kind="bar", col="cardio", legend="auto")
-    cat_plot.set_xlabels('value')
+    cat_plot.set_xlabels('variable')
     cat_plot.set_ylabels('total')
 
     # 8
