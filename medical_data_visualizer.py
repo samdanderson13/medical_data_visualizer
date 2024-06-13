@@ -69,32 +69,27 @@ def draw_heat_map():
     bp_filter = (df['ap_lo'] <= df['ap_hi'])
 
     data_filter = height_filter & weight_filter & bp_filter
-
     df_heat = df.loc[data_filter]
-
 
     # 12
     corr = df_heat.corr()
-    print(corr.info())
-    print(corr)
-    #print(corr.loc['id','id'])
-    #print(corr.iloc[0,:])
+    corr = corr.apply(lambda x: x.round(1))  
 
     # 13
     length = corr.index.size
-    mask = np.fromfunction(lambda i, j: i > j, (length,length), dtype=int)
-    corr = corr.where(mask)
-    print(corr)
-
-    corr = corr.apply(lambda x: x.round(1))
+    mask = np.fromfunction(lambda i, j: i <= j, (length,length), dtype=int)
 
     # 14
-    #fig, ax = None
-    
-    ax = sns.heatmap(corr, annot=True)
-    fig = ax.figure
+
+    fig, ax = plt.subplots(figsize=(8,7))
+
+    #ax = sns.heatmap(corr, annot=True, linewidth=0.5, mask=mask)
+    #fig = ax.figure
 
     # 15
+
+    sns.heatmap(corr, annot=True, linewidth=0.5, mask=mask, ax=ax, square=True)
+    #fig.subplots_adjust(top=0.95, bottom=0.13)
 
 
 
